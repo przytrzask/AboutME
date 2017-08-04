@@ -1,1 +1,42 @@
 @import '~grommet/scss/vanilla/index';
+
+@keyframes crawl {
+  0% { stroke-dasharray: 95px 1px; }
+  20% { stroke-dasharray: 90px 6px; stroke-dashoffset: 96px; }
+  80% { stroke-dasharray: 90px 6px; stroke-dashoffset: 0; }
+  100% { stroke-dasharray: 95px 1px; }
+}
+
+.title {
+
+  .ferret-logo {
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    .ferret-logo {
+      transform: translateX(2px);
+    }
+  }
+}
+
+.message {
+  max-width: $readable-text-width;
+}
+
+// TODO: Move to grommet core
+.#{$grommet-namespace}sidebar {
+  @include media-query(lap-and-up) {
+    @include animation('slide-sidebar 0.4s');
+  }
+}
+
+@include keyframes(slide-sidebar) {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 240px;
+  }
+}

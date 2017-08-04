@@ -19,13 +19,27 @@ import Home from './components/Home'
 import Contact from './components/Contact'
 
 export default class BasicApp extends Component {
+
+  constructor() {
+    super();
+
+    // this._isActive = this._isActive.bind(this);
+
+
+  }
+
+  _isActive(match, location) {
+    console.log(match)
+    console.log(location)
+    return false
+
+  }
   render() {
-    console.log(this.context)
     return (
       <Router >
       <App centered={false}>
         <Split fixed={true} flex='right'>
-          <Sidebar size="small" full={true} colorIndex="brand">
+          <Sidebar size="small" full={true} colorIndex="neutral-1">
             <Header pad='medium'
               justify='between'>
               <Title>
@@ -35,11 +49,14 @@ export default class BasicApp extends Component {
             <Box flex='grow'
               justify='start'>
               <Menu primary={true}>
-                <NavLink exact to="#first">
+                <NavLink exact to="/">
                   About
                 </NavLink>
-                <NavLink exact to="#second">
+                <NavLink isActive={this._isActive} exact to="#second">
                   Contact
+                </NavLink>
+                <NavLink isActive={this._isActive}  to="#ability">
+                  Ability
                 </NavLink>
                 
               </Menu>
@@ -48,7 +65,8 @@ export default class BasicApp extends Component {
           <Box>
            
           <Route exact path="/" component={AboutMe} />
-          <Route exact path="/second" component={AboutMe} />
+          <Route  path="second" component={AboutMe} />
+          <Route   path="ability" component={AboutMe} />
           </Box>
         </Split>
       </App>
