@@ -72,17 +72,36 @@ const WhyGrommetItem = (props) => (
 );
 
 export default class AboutMe extends Component {
+  constructor() {
+    super()
+
+    this.state = { text: ""}
+    this._changeTextEverySecond = this._changeTextEverySecond.bind(this);
+
+
+  }
 
   componentDidMount() {
-    // var element = document.getElementById("second"); element.scrollIntoView({
-    // block: "start", behavior: "smooth" });
+   this.interval = setInterval(this._changeTextEverySecond.bind(this), 1000);
   }
+  componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+  _changeTextEverySecond() {
+    const texts = ["Human", "Myself", "Happy"];
+    let text =  texts[Math.floor(Math.random()*texts.length)];
+    this.setState({ text })
+    
+  }
+
+
 
   render() {
 
     return (
       <ScrollIntoView id={this.props.location.hash}>
-        <Article scrollStep={true}>
+        <Article scrollStep={false}>
 
           <Section  colorIndex="light-2" justify="center" align="center" separator="top">
             <Heading alignSelf="start" tag='h2' strong={true}>Who am I?</Heading>
@@ -127,7 +146,7 @@ export default class AboutMe extends Component {
                     <Anchor href="" icon={<SocialFacebookIcon colorIndex="plain" />} />
                     </Box>
                     <Box margin="small">
-                    <Paragraph>Rising React/FrontEnd developer
+                    <Paragraph pad="none">Rising React/FrontEnd developer
                     </Paragraph>
                     </Box>
                   </Box>
@@ -138,8 +157,8 @@ export default class AboutMe extends Component {
                 <Paragraph margin="none" align="start">
                   I am Internet enthusiast, sports lover with programing passion. Graduate of
                   Software Dvelopment Acadamy bootcamp. Trying to jump at the chance and develop
-                  myself as front-end developer. I am Living in Tricity for 4 years and want to
-                  finally learn kitesurfing. I want to use big motivation and ambition to realize
+                  myself as front-end developer. I am Living in Tricity for 4 years and
+                  finally have started learn kitesurfing. I want to use big motivation and ambition to realize
                   fresh ideas and my desire to create. My experience in various works makes me
                   able to fit in every situation
                 </Paragraph>
@@ -153,7 +172,17 @@ export default class AboutMe extends Component {
           <Section id="ability" separator='top' align="center">
             <Heading tag='h2' strong={true}>What makes me</Heading>
             <Paragraph align='center'>
-              Human
+              <Animate
+      visible='scroll'
+      keep={true}
+      enter={{
+      animation: 'slide-up',
+      duration: 1000,
+      delay: 100
+    }}>
+              {this.state.text}
+      
+    </Animate>
             </Paragraph>
             <Tiles justify='center' pad={{
               vertical: 'medium'
@@ -183,8 +212,7 @@ export default class AboutMe extends Component {
                 path='/docs/learn'
                 delay={500}>
                 <Paragraph align='center' margin='none'>
-                  Responsive web without the hassle of grid management and modular components
-                  loaded on demand. Themes allow your brand to shine.
+                  My experience in various caompanys makes me fit in every situation.
                 </Paragraph>
               </WhyGrommetItem>
               <WhyGrommetItem
