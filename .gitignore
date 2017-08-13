@@ -1,3 +1,6 @@
 node_modules
+.env
 package-lock.json
-        modified:   package.json
+        modified:   package.json.env 
+npm-debug.log
+/*.env
