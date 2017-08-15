@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Box from 'grommet/components/Box';
 import Tile from 'grommet/components/Tile';
 import ResourcesIcon from 'grommet/components/icons/base/Resources';
 import AccessibleIcon from
-'grommet/components/icons/base/Accessible';
+  'grommet/components/icons/base/Accessible';
 import ConfigureIcon from 'grommet/components/icons/base/Configure';
 import RunIcon from 'grommet/components/icons/base/Run';
 import GrommetIcon from 'grommet/components/icons/base/BrandGrommetOutline';
@@ -25,6 +25,7 @@ import Section from 'grommet/components/Section';
 import Animate from 'grommet/components/Animate';
 
 import PlatformReactjsIcon from 'grommet/components/icons/base/PlatformReactjs';
+import StandardsHtml5Icon from 'grommet/components/icons/base/StandardsHtml5';
 import SatelliteIcon from 'grommet/components/icons/base/Satellite';
 import LinkNext from 'grommet/components/icons/base/LinkNext';
 import UserManager from 'grommet/components/icons/base/UserManager';
@@ -33,9 +34,34 @@ import SocialLinkedinIcon from 'grommet/components/icons/base/SocialLinkedin';
 import SocialGithubIcon from 'grommet/components/icons/base/SocialGithub';
 import SocialCodepenIcon from 'grommet/components/icons/base/SocialCodepen';
 import SocialFacebookIcon from 'grommet/components/icons/base/SocialFacebook';
+import BrandGrommetPathIcon from 'grommet/components/icons/base/BrandGrommetPath';
+import StarIcon from 'grommet/components/icons/base/Star';
 
-import {ScrollIntoView} from 'rrc';
-import {Motion, spring} from 'react-motion'
+import Scroll from 'react-scroll'; // Imports all Mixins
+import { scroller } from 'react-scroll'; //Imports scroller mixin, can use as scroller.scrollTo()
+import Typing from 'react-typing-animation'
+
+
+// Or Access Link,Element,etc as follows
+let Link = Scroll.Link;
+let Element = Scroll.Element;
+let Events = Scroll.Events;
+let scroll = Scroll.animateScroll;
+let scrollSpy = Scroll.scrollSpy;
+
+import { Motion, spring } from 'react-motion'
+import Waypoint from 'react-waypoint';
+
+const Rating = (props) => {
+  const { count } = props;
+  let arr = [];
+for (let i =0; i < count; i++) {
+  arr.push(<StarIcon size="large" />)
+  
+}
+return <Box direction="row">{arr}</Box>;
+
+}
 
 const WhyGrommetItem = (props) => (
   <Tile basis='medium' pad='small'>
@@ -43,10 +69,10 @@ const WhyGrommetItem = (props) => (
       visible='scroll'
       keep={true}
       enter={{
-      animation: 'slide-up',
-      duration: 1000,
-      delay: (props.delay || 100)
-    }}>
+        animation: 'slide-up',
+        duration: 1000,
+        delay: (props.delay || 100)
+      }}>
       <Button href={props.href} path={props.path}>
         <Box pad={{
           between: 'small',
@@ -75,178 +101,234 @@ export default class AboutMe extends Component {
   constructor() {
     super()
 
-    this.state = { text: ""}
+    this.state = { text: "" }
     this._changeTextEverySecond = this._changeTextEverySecond.bind(this);
+    this._handleWaypointReach = this._handleWaypointReach.bind(this);
+    this._onRatingDetails = this._onRatingDetails.bind(this);
 
 
   }
 
   componentDidMount() {
-   this.interval = setInterval(this._changeTextEverySecond.bind(this), 1000);
+    this.interval = setInterval(this._changeTextEverySecond.bind(this), 1000);
   }
   componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+    clearInterval(this.interval);
+  }
 
   _changeTextEverySecond() {
-    const texts = ["Human", "Myself", "Happy"];
-    let text =  texts[Math.floor(Math.random()*texts.length)];
+    const texts = ["Human", "Myself", "Happy", "Me"];
+    let text = texts[Math.floor(Math.random() * texts.length)];
     this.setState({ text })
-    
+
   }
+
+  _handleWaypointReach(activeComponent, a) {
+    this.props.onReachWayPoint(activeComponent, a)
+
+
+  }
+
+  _onRatingDetails() {
+    console.log("sdf"
+    )
+  }
+
+
 
 
 
   render() {
 
     return (
-      <ScrollIntoView id={this.props.location.hash}>
-        <Article scrollStep={false}>
+      // <ScrollIntoView id={this.props.location.hash}>
+      <Article scrollStep={false}>
+        <Waypoint
+          key="about"
+          onEnter={this._handleWaypointReach.bind(this, "about")}
+        />
+        <Section flex={true} id="about" colorIndex="light-2" justify="center" align="center" separator="top">
 
-          <Section  colorIndex="light-2" justify="center" align="center" separator="top">
-            <Heading alignSelf="start" tag='h2' strong={true}>Who am I?</Heading>
-            <Animate
-              visible={true}
-              keep={true}
-              enter={{
+          <Heading alignSelf="start" tag='h2' strong={true}>Who am I?</Heading>
+
+          <Animate
+            visible={true}
+            keep={true}
+            enter={{
               animation: 'fade',
               duration: 1000,
               delay: 100
             }}>
-              <Quote pad={{between: "small"}} margin="none" borderColorIndex="light-1"  full="horizontal" >
-                <Box pad="none" direction="row">
+
+            <Quote pad={{ between: "small" }} margin="none" borderColorIndex="light-1" full="horizontal" >
+              <Box pad="none" direction="row">
                 <Box
                   size="xlarge"
                   align="center"
                   justify="between"
                   style={{
-                  backgroundColor: 'rgba(0,0,0, 0.1)',
-                  
-                }}
+                    backgroundColor: 'rgba(0,0,0, 0.1)',
+
+                  }}
                   pad="small">
                   {/* <UserManager size="large" colorIndex="grey-1"/> */}
 
                   <Box align="start">
                     <Box alignSelf="start" ><Image
-                    style={{
-                      width: 60 + "px",
-                      height: 60 + "px",
-        'borderRadius': 50 + "%",
-        'boxShadow': '0px 0px 0px 3px rgba(0,0,0,0.5)'
-      }}
-                    src='/img/tmk.png'
-                    full={false}
-                    size='thumb'/></Box>
+                      style={{
+                        width: 60 + "px",
+                        height: 60 + "px",
+                        'borderRadius': 50 + "%",
+                        'boxShadow': '0px 0px 0px 3px rgba(0,0,0,0.5)'
+                      }}
+                      src='/img/tmk.png'
+                      full={false}
+                      size='thumb' /></Box>
                     <Label margin="none" size="medium" uppercase={true}>Tomasz</Label>
                     <Heading tag='h2' strong={true}>Trzaskoma</Heading>
                     <Box direction="row">
-                    <Anchor icon={<SocialGithubIcon colorIndex="plain" />} />
-                    <Anchor icon={<SocialLinkedinIcon colorIndex="plain" />} />
-                    <Anchor icon={<SocialCodepenIcon colorIndex="plain" />} />
-                    <Anchor href="" icon={<SocialFacebookIcon colorIndex="plain" />} />
+                      <Anchor href="https://github.com/przytrzask" target="_blank" icon={<SocialGithubIcon colorIndex="plain" />} />
+                      <Anchor href="https://www.linkedin.com/in/tomasz-trzaskoma-a37557b5/" target="_blank" icon={<SocialLinkedinIcon colorIndex="plain" />} />
+                      <Anchor href="https://codepen.io/przytrzask/" target="_blank" icon={<SocialCodepenIcon colorIndex="plain" />} />
+                      <Anchor href="https://www.facebook.com/TrzasQ" target="_blank" icon={<SocialFacebookIcon colorIndex="plain" />} />
                     </Box>
                     <Box margin="small">
-                    <Paragraph pad="none">Rising React/FrontEnd developer
+                      <Paragraph pad="none">Rising React/FrontEnd developer
                     </Paragraph>
                     </Box>
                   </Box>
-                  
+
 
                 </Box>
                 <Box colorIndex="light-1" pad="small">
-                <Paragraph margin="none" align="start">
-                  I am Internet enthusiast, sports lover with programing passion. Graduate of
+                  <Paragraph margin="none" align="start">
+                    I am Internet enthusiast, sports lover with programing passion. Graduate of
                   Software Dvelopment Acadamy bootcamp. Trying to jump at the chance and develop
                   myself as front-end developer. I am Living in Tricity for 4 years and
-                  finally have started learn kitesurfing. I want to use big motivation and ambition to realize
+                  finally have started to learn kitesurfing. I want to use big motivation and ambition to realize
                   fresh ideas and my desire to create. My experience in various works makes me
                   able to fit in every situation
                 </Paragraph>
                 </Box>
-                </Box>
+              </Box>
 
-              </Quote>
-            </Animate>
-          </Section>
+            </Quote>
+          </Animate>
+        </Section>
 
-          <Section id="ability" separator='top' align="center">
-            <Heading tag='h2' strong={true}>What makes me</Heading>
-            <Paragraph align='center'>
-              <Animate
-      visible='scroll'
-      keep={true}
-      enter={{
-      animation: 'slide-up',
-      duration: 1000,
-      delay: 100
-    }}>
-              {this.state.text}
-      
-    </Animate>
-            </Paragraph>
-            <Tiles justify='center' pad={{
-              vertical: 'medium'
-            }}>
-              <WhyGrommetItem
-                icon={< SatelliteIcon colorIndex = 'neutral-1' size = 'large' />}
-                heading='Curious'
-                path='#'
-                delay={100}>
-                <Paragraph align='center' margin='none'>
-                  I am curious about the world the same as bout new technologies. That keeps me on the path.
-                  
-                </Paragraph>
-              </WhyGrommetItem>
-              <WhyGrommetItem
-                icon={< RunIcon colorIndex = 'neutral-1' size = 'large' />}
-                heading='Active'
-                href='#'
-                delay={300}>
-                <Paragraph align='center' margin='none'>
-                  Trying to be active and proactive in whole life not only ICT technologies but also in sports and social activities.
-                </Paragraph>
-              </WhyGrommetItem>
-              <WhyGrommetItem
-                icon={< ConfigureIcon colorIndex = 'neutral-1' size = 'large' />}
-                heading='Flexible'
-                path='/docs/learn'
-                delay={500}>
-                <Paragraph align='center' margin='none'>
-                  My experience in various caompanys makes me fit in every situation.
-                </Paragraph>
-              </WhyGrommetItem>
-              <WhyGrommetItem
-                icon={< AccessibleIcon colorIndex = 'neutral-1' size = 'large' />}
-                heading='Abilities'
-                href="#"
-                delay={700}>
-                <Paragraph align='center' margin='none'>
-                  All users matter. Grommet provides a robust foundation of accessibility features
-                  to meet web standards.
-                </Paragraph>
-              </WhyGrommetItem>
-            </Tiles>
-          </Section>
-          <Section separator='top' align="center">
-            <Heading tag='h2' strong={true}>Technologes I am into</Heading>
+        <Section id="ability" separator='top' align="center">
+          <Waypoint
+            key="about"
+            onEnter={this._handleWaypointReach.bind(this, "ability")}
+          />
+          <Heading tag='h2' strong={true}>What makes me  <Typing speed={50} className="inline" loop={true}>
+            <span style={{ display: "inline" }}>{this.state.text}</span>
+            <Typing.Backspace speed={-1} delay={2000} />
+          </Typing></Heading>
+          
+          <Tiles justify='center' pad={{
+            vertical: 'medium'
+          }}>
             <WhyGrommetItem
-              icon={< PlatformReactjsIcon size="large" colorIndex = 'brand' />}
-              heading='Abilities'
-              href="#"
+              icon={< SatelliteIcon colorIndex='neutral-1' size='large' />}
+              heading='Curiousity'
+              href='#'
               delay={100}>
               <Paragraph align='center' margin='none'>
-                All users matter. Grommet provides a robust foundation of accessibility features
-                to meet web standards.
-              </Paragraph>
+                I am curious about the world the same as bout new technologies. That keeps me on the path.
+
+                </Paragraph>
             </WhyGrommetItem>
+            <WhyGrommetItem
+              icon={< RunIcon colorIndex='neutral-1' size='large' />}
+              heading='Activity'
+              href='#'
+              delay={300}>
+              <Paragraph align='center' margin='none'>
+                Trying to be active and proactive in whole life not only ICT technologies but also in sports and social activities.
+                </Paragraph>
+            </WhyGrommetItem>
+            <WhyGrommetItem
+              icon={< ConfigureIcon colorIndex='neutral-1' size='large' />}
+              heading='Flexiblility'
+              href="#"
+              delay={500}>
+              <Paragraph align='center' margin='none'>
+                My experience in various places makes me fit in every situation.
+                </Paragraph>
+            </WhyGrommetItem>
+            <WhyGrommetItem
+              icon={< AccessibleIcon colorIndex='neutral-1' size='large' />}
+              heading='Training'
+              href="#"
+              delay={700}>
+              <Paragraph align='center' margin='none'>
+                Practice makes champions. Trying to learn/train to improve everyday.
+                </Paragraph>
+            </WhyGrommetItem>
+          </Tiles>
+        </Section>
 
-            <Tiles justify='center' pad={{
-              vertical: 'medium'
-            }}></Tiles>
-          </Section>
 
-        </Article>
-      </ScrollIntoView>
+        <Section id="contact" separator='top' align="center">
+          <Waypoint
+            key="about"
+            onEnter={this._handleWaypointReach.bind(this, "contact")}
+          />
+          <Heading tag='h2' strong={true}>Technologes I am into</Heading>
+          <Tiles justify='center' pad={{
+            vertical: 'medium'
+          }}>
+          <WhyGrommetItem
+            icon={
+              <StandardsHtml5Icon size="large" colorIndex='brand' />}
+            heading='Html/Jsx'
+            href="#"
+            delay={100}>
+            <Paragraph align='center' margin='none'>
+              
+              </Paragraph>
+          </WhyGrommetItem>
+          <WhyGrommetItem
+            icon={< PlatformReactjsIcon size="large" colorIndex='brand' />}
+            heading='React'
+            href="#"
+            delay={100}>
+            <Paragraph align='center' margin='none'>
+              The best framework now creating interactive UIs is painless.
+              </Paragraph>
+          </WhyGrommetItem>
+          
+          <WhyGrommetItem
+            onMouseOver={this._onRatingDetails}
+            icon={<BrandGrommetPathIcon  size="large" colorIndex='brand' />}
+            heading='Grommet'
+            href="#"
+            delay={100}>
+            <Paragraph align='center' margin='none'>
+              Cool stuff. New approach to Ux design for enterprise apps. On top of react indeed.
+              </Paragraph>
+          </WhyGrommetItem>
+          <WhyGrommetItem
+            icon={<Rating count={5} />}
+            heading='Grommet'
+            href="#"
+            delay={100}>
+            <Paragraph align='center' margin='none'>
+              Cool stuff. New approach to Ux design for enterprise apps. On top of react indeed.
+              </Paragraph>
+          </WhyGrommetItem>
+          
+          
+            
+          
+
+          </Tiles>
+
+        </Section>
+
+      </Article>
+      // </ScrollIntoView>
     )
   }
 

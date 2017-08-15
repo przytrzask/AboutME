@@ -1,10 +1,18 @@
 @import '~grommet/scss/vanilla/index';
 
+.inline {
+  display: inline;
+}
+
 @keyframes crawl {
   0% { stroke-dasharray: 95px 1px; }
   20% { stroke-dasharray: 90px 6px; stroke-dashoffset: 96px; }
   80% { stroke-dasharray: 90px 6px; stroke-dashoffset: 0; }
   100% { stroke-dasharray: 95px 1px; }
+}
+
+.grommetux-control-icon-star > polygon {
+  fill: darkgoldenrod;
 }
 
 .title {
