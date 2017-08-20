@@ -32,7 +32,7 @@ export default class BasicApp extends Component {
 
         this._onReachWayPoint = this._onReachWayPoint.bind(this);
 
-        this.state = { activeNavTab: "" }
+        this.state = { activeNavTab: "about" }
 
 
     // this._isActive = this._isActive.bind(this);
@@ -40,30 +40,13 @@ export default class BasicApp extends Component {
 
   }
 
-  componentDidMount() {
-
-    Events.scrollEvent.register('begin', function() {
-      console.log("begin", arguments);
-    });
-
-    Events.scrollEvent.register('end', function() {
-      console.log("end", arguments);
-    });
-
-    scrollSpy.update();
-
-  }
-  scrollToTop() {
-    scroll.scrollToTop();
-  }
-  componentWillUnmount() {
-    Events.scrollEvent.remove('begin');
-    Events.scrollEvent.remove('end');
-  }
+  
 
   _onReachWayPoint(prop,a) {
-    console.log(prop);
-    console.log(a);
+    
+    this.setState( (state) => ({activeNavTab: prop}) )
+  }
+  _navTarget(prop) {
     
     this.setState( (state) => ({activeNavTab: prop}) )
   }
@@ -81,14 +64,17 @@ export default class BasicApp extends Component {
               </Title>
             </Header>
             <Menu  primary={true} >
-                <Anchor onClick={this._onReachWayPoint.bind(this, "about")}  className={(this.state.activeNavTab === 'about') ? 'active' : '' } href="#about">
+                <Anchor onClick={this._navTarget.bind(this, "about")}  className={(this.state.activeNavTab === 'about') ? 'active' : '' } href="#about">
                   About
                 </Anchor>
-                 <Anchor onClick={this._onReachWayPoint.bind(this, "ability")}  className={(this.state.activeNavTab === 'ability') ? 'active' : '' } href="#ability">
+                 <Anchor onClick={this._navTarget.bind(this, "ability")}  className={(this.state.activeNavTab === 'ability') ? 'active' : '' } href="#ability">
                   Abilities
                 </Anchor>
-                <Anchor onClick={this._onReachWayPoint.bind(this, "contact")}  href="#contact" className={(this.state.activeNavTab === 'contact') ? 'active' : '' } >
-                  Features
+                <Anchor onClick={this._navTarget.bind(this, "technologies")}  href="#technologies" className={(this.state.activeNavTab === 'technologies') ? 'active' : '' } >
+                  Technologies
+                </Anchor>
+                <Anchor onClick={this._navTarget.bind(this, "learning")}  href="#learning" className={(this.state.activeNavTab === 'learning') ? 'active' : '' } >
+                  learning
                 </Anchor>
                
                 </Menu>
@@ -96,7 +82,7 @@ export default class BasicApp extends Component {
           </Sidebar>
           <Box>
            
-          <AboutMe onReachWayPoint={this._onReachWayPoint} onScroll={()=>{console.log("sdf")}} />
+          <AboutMe onReachWayPoint={this._onReachWayPoint}  />
           </Box>
         </Split>
       </App>
