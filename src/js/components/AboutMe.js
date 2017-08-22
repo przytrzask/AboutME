@@ -44,6 +44,8 @@ import SVGIcon from 'grommet/components/SVGIcon'
 import Scroll from 'react-scroll'; // Imports all Mixins
 import { scroller } from 'react-scroll'; //Imports scroller mixin, can use as scroller.scrollTo()
 import Typing from 'react-typing-animation';
+import { Motion, spring } from 'react-motion';
+
 
 
 
@@ -54,7 +56,6 @@ let Events = Scroll.Events;
 let scroll = Scroll.animateScroll;
 let scrollSpy = Scroll.scrollSpy;
 
-import { Motion, spring } from 'react-motion'
 import Waypoint from 'react-waypoint';
 
 const Rating = (props) => {
@@ -92,6 +93,44 @@ const cssIcon = <SVGIcon colorIndex="plain" size="large" >
     <path fill="#1572B6" d="M8.76 1l10.055 112.883 45.118 12.58 45.244-12.626 10.063-112.837h-110.48zm89.591 25.862l-3.347 37.605.01.203-.014.467v-.004l-2.378 26.294-.262 2.336-28.36 7.844v.001l-.022.019-28.311-7.888-1.917-21.739h13.883l.985 11.054 15.386 4.17-.004.008v-.002l15.443-4.229 1.632-18.001h-32.282999999999994l-.277-3.043-.631-7.129-.331-3.828h34.748999999999995l1.264-14h-52.926l-.277-3.041-.63-7.131-.332-3.828h69.281l-.331 3.862z"></path>
   </svg>
 </SVGIcon>
+
+const learning = {
+  redux: {
+    title: "Redux",
+    icon: "./img/redux.png",
+    progress: 0
+  },
+  GitHub: {
+    title: "GitHub",
+    icon: "./img/git.png",
+    progress: 0
+  },
+  NodeJs: {
+    title: "NodeJs",
+    icon: "./img/nodejs.png",
+    progress: 0
+  },
+  reactMotion: {
+    title: "React-motion",
+    icon: "./img/react.png",
+    progress: 0
+  },
+  graphQl: {
+    title: "GraphQl",
+    icon: "./img/graphql.png",
+    progress: 0
+  },
+  MobX: {
+    title: "MobX",
+    icon: "./img/mobX.jpg",
+    progress: 0
+  },
+
+
+
+
+
+};
 
 const WhyGrommetItem = (props) => (
   <Tile basis='medium' pad='small'>
@@ -132,48 +171,14 @@ export default class AboutMe extends Component {
     super()
 
     this.state = {
-      text: "", learning: {
-        redux: {
-          title:"Redux",
-          icon: "./img/redux.png",
-          progress: 0
-        },
-        GitHub: {
-          title: "GitHub",
-          icon: "./img/git.png",
-          progress: 0
-        },
-        NodeJs: {
-          title:"NodeJs",
-          icon: "./img/nodejs.png",
-          progress: 0
-        },
-        reactMotion: {
-          title: "React-motion",
-          icon: "./img/react.png",
-          progress: 0
-        },
-        graphQl: {
-          title:"GraphQl",
-          icon: "./img/graphql.png",
-          progress: 0
-        },
-        MobX: {
-          title:"MobX",
-          icon: "./img/mobX.jpg",
-          progress: 0
-        },
-        
-        
-        
-      
-
-     } }
+      text: "?", learning
+    }
     this._changeTextEverySecond = this._changeTextEverySecond.bind(this);
     this._handleWaypointReach = this._handleWaypointReach.bind(this);
     this._onRatingDetails = this._onRatingDetails.bind(this);
     this._onLeave = this._onLeave.bind(this);
     this._initMeter = this._initMeter.bind(this);
+    this._resetMeter = this._resetMeter.bind(this);
     this._showMeter = this._showMeter.bind(this);
 
 
@@ -193,10 +198,8 @@ export default class AboutMe extends Component {
 
   }
 
-  _handleWaypointReach(activeComponent, a) {
-    // console.log(activeComponent)
-    // console.log(a)
-    this.props.onReachWayPoint(activeComponent, a)
+  _handleWaypointReach(activeComponent, e) {
+    return this.props.onReachWayPoint(activeComponent, e)
 
 
   }
@@ -204,13 +207,22 @@ export default class AboutMe extends Component {
   _initMeter() {
     setTimeout(this._showMeter.bind(this), 1000);
     this._handleWaypointReach("learning")
-   
+
   }
-  _showMeter(){ 
-     this.setState({ learning: {...this.state.learning, graphQl: {...this.state.learning.graphQl, progress: 20},
-     reactMotion: {...this.state.learning.reactMotion, progress: 30}, GitHub: {...this.state.learning.GitHub, progress: 70},
-    MobX: {...this.state.learning.MobX, progress: 20}, redux: {...this.state.learning.redux, progress: 80},
-  NodeJs: {...this.state.learning.NodeJs, progress: 50}}})
+
+  _resetMeter() {
+    this.setState({ learning: learning })
+
+  }
+  _showMeter() {
+    this.setState({
+      learning: {
+        ...this.state.learning, graphQl: { ...this.state.learning.graphQl, progress: 20 },
+        reactMotion: { ...this.state.learning.reactMotion, progress: 30 }, GitHub: { ...this.state.learning.GitHub, progress: 70 },
+        MobX: { ...this.state.learning.MobX, progress: 20 }, redux: { ...this.state.learning.redux, progress: 80 },
+        NodeJs: { ...this.state.learning.NodeJs, progress: 50 }
+      }
+    })
   }
 
   //    learning: {
@@ -233,12 +245,13 @@ export default class AboutMe extends Component {
   // }
 
   _onRatingDetails() {
-    
+
   }
 
-  _onLeave(prop) {
+  _onLeave(component, prop) {
 
-    return (prop.currentPosition === "below") ? this._handleWaypointReach("about") : null;
+
+    return (prop.currentPosition === "below") ? this._handleWaypointReach(component) : null;
   }
 
 
@@ -282,7 +295,7 @@ export default class AboutMe extends Component {
                   {/* <UserManager size="large" colorIndex="grey-1"/> */}
 
                   <Box align="start">
-                    <Box alignSelf="start" ><Image
+                    <Box alignSelf="start" margin="small" ><Image
                       style={{
                         width: 60 + "px",
                         height: 60 + "px",
@@ -330,7 +343,7 @@ export default class AboutMe extends Component {
         <Section id="ability" separator='top' align="center">
           <Waypoint
             onEnter={this._handleWaypointReach.bind(this, "ability")}
-            onLeave={this._onLeave}
+            onLeave={this._onLeave.bind(this, "about")}
           />
 
           <Heading tag='h2' strong={true}>What makes me  <Typing speed={50} className="inline" loop={true}>
@@ -385,8 +398,10 @@ export default class AboutMe extends Component {
         <Section id="technologies" separator='top' align="center">
           <Waypoint
             onEnter={this._handleWaypointReach.bind(this, "technologies")}
+            onLeave={this._onLeave.bind(this, "ability")}
+
           />
-          <Heading tag='h2' strong={true}>Technologes I am into</Heading>
+          <Heading tag='h2' strong={true}>Technologies I am into</Heading>
           <Tiles justify='center' pad={{
             vertical: 'medium'
           }}>
@@ -401,14 +416,14 @@ export default class AboutMe extends Component {
 
               </Paragraph>
             </WhyGrommetItem>
-           
+
 
             <WhyGrommetItem
               onMouseOver={this._onRatingDetails}
               icon={jsIcon}
               heading='JavaScript/Es6'
               href="#"
-              delay={500}>
+              delay={300}>
               <Paragraph align='center' margin='none'>
                 Started in ES5 times. Switched to ES6. Can't live without spread operator now. Really 💖 ES6
               </Paragraph>
@@ -417,16 +432,16 @@ export default class AboutMe extends Component {
               icon={cssIcon}
               heading='Css/Sass'
               href="#"
-              delay={700}>
+              delay={500}>
               <Paragraph align='center' margin='none'>
                 Once disliked. Now like it much more due to flexbox capabilities 💪
               </Paragraph>
             </WhyGrommetItem>
-             <WhyGrommetItem
+            <WhyGrommetItem
               icon={reactIcon}
               heading='React'
               href="#"
-              delay={300}>
+              delay={700}>
               <Paragraph align='center' margin='none'>
                 The best framework now creating interactive UIs is painless.
                 Have a lot of fun with it 😂
@@ -443,21 +458,23 @@ export default class AboutMe extends Component {
         <Section id="learning" separator='top' align="center">
           <Waypoint
             onEnter={this._initMeter}
+            onLeave={this._resetMeter}
           />
           <Heading tag='h2' strong={true}>Learning curve</Heading>
           <List style={{ overflow: "hidden" }}>
 
             {
               Object.keys(this.state.learning).map(item => {
-                
+
                 return (
+
                   <Animate
                     key={item}
                     visible='scroll'
                     keep={true}
                     enter={{
                       animation: 'slide-up',
-                      duration: 1000,
+                      duration: 100,
                       delay: 100
                     }}><ListItem align="center" justify="between"
                       pad={{ horizontal: 'medium', vertical: 'medium', between: 'medium' }}>
@@ -467,14 +484,27 @@ export default class AboutMe extends Component {
 
                       </Box>
                       <Box>
-                        <Meter max={100} onActive={()=>{return}} size="small"
-                          value={this.state.learning[item].progress}
-                          a11yTitle="Progress bar" />
-                        <Value align="start" size="small"
-                          value={this.state.learning[item].progress} units="%" />
+                        <Motion defaultStyle={{ value: 0 }}
+                          style={{ value: spring(this.state.learning[item].progress) }}
+                        >
+                          {
+                            
+                            (style) => (
+                            <Box>
+                              <Meter max={100} onActive={() => { return }} size="small"
+                                value={style.value}
+                                a11yTitle="Progress bar" />
+                              <Value align="start" size="small"
+                                value={this.state.learning[item].progress} units="%" />
+                            </Box>)
+                          }
+                        </Motion>
                       </Box>
 
-                    </ListItem></Animate>)
+
+                    </ListItem></Animate>
+
+                )
               })
             }
 

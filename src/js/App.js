@@ -74,7 +74,7 @@ export default class BasicApp extends Component {
                   Technologies
                 </Anchor>
                 <Anchor onClick={this._navTarget.bind(this, "learning")}  href="#learning" className={(this.state.activeNavTab === 'learning') ? 'active' : '' } >
-                  learning
+                  Learning
                 </Anchor>
                
                 </Menu>
